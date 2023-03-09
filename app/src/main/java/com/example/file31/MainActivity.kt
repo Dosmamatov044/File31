@@ -1,18 +1,23 @@
 package com.example.file31
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.file31.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class MainActivity : AppCompatActivity() {
 
 
     lateinit var binding:ActivityMainBinding
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater)
@@ -38,18 +43,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveData() {
 val text=binding.inputEdit.text.toString()
 
 
-
-        val file=File(getExternalFilesDir(null), FILE_NAME)
+        Files.createDirectories(Paths.get(getExternalFilesDir(null)?.path+ "/Новая/"))
+       val file=File(getExternalFilesDir(null), "Новая/$FILE_NAME")
 
 
 
         FileOutputStream(file).use {
-            val bytes=text.toByteArray()
-            it.write(bytes)
+          val bytes=text.toByteArray()
+           it.write(bytes)
         }
 
 
